@@ -5,4 +5,5 @@ class Bumper:
         self.score_value = score_value
 
     def on_hit(self):
+        pass
 

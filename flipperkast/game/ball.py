@@ -6,6 +6,6 @@ class Ball:
         self.velocity_y = 0
 
     def move(self):
-
+        pass
     def check_collision(self, obj):
-        
+        pass

@@ -5,5 +5,7 @@ class Flipper:
         self.active = False
 
     def activate(self):
+        pass
 
     def deactivate(self):
+        pass
