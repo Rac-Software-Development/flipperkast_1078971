@@ -1,5 +1,5 @@
 class Bumper:
-    def __init__(self, x: float, y: float, radius: float = 15, score_value: int = 100):
+    def __init__(self, x, y, radius=30, score_value=100):
         self.x = x
         self.y = y
         self.radius = radius
@@ -12,4 +12,4 @@ class Bumper:
         return distance_squared <= self.radius ** 2
 
     def on_hit(self):
-        pass
+        print(f"Bumper geraakt! +{self.score_value} punten")
