@@ -1,14 +1,16 @@
 import time
 from game.ball import Ball
 from game.bumper import Bumper
+from mqtt.mqtt_client import MQTTClient
 
 class GameManager:
     def __init__(self):
         self.ball = Ball(100, 100)
         self.bumpers = [
             Bumper(200, 250),
-            Bumper(160, 160),
-        ]
+            Bumper(160, 160),]
+        self.mqtt = MQTTClient()
+        self.mqtt.start()
 
     def run(self):
         print("Game gestart!")
@@ -23,3 +25,4 @@ class GameManager:
 
             time.sleep(0.1)
             tick += 1
+        self.mqtt.stop()
