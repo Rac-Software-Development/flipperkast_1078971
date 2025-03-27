@@ -1,5 +1,6 @@
 import pygame
 import math
+from game.flipper import Flipper
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -23,13 +24,18 @@ class Display:
         self.ball = ball
         self.bumpers = bumpers
 
+        self.left_flipper = None
+        self.right_flipper = None
+
         self.left_angle = 0
         self.right_angle = 0
 
-    def draw_flipper(self, pivot, length, width, angle, flip=False):
-        short = width // 2
-        long = width
+    def set_flippers(self, left_flipper, right_flipper):
+        self.left_flipper = left_flipper
+        self.right_flipper = right_flipper
 
+    def draw_flipper(self, flipper, pivot, length, width, flip=False):
+        short = width // 2
         points = [
             (pivot[0], pivot[1]),
             (pivot[0] + length, pivot[1] - short),
@@ -39,7 +45,7 @@ class Display:
         if flip:
             points = [(2 * pivot[0] - x, y) for (x, y) in points]
 
-        rotated = [rotate_point(p, pivot, angle) for p in points]
+        rotated = [rotate_point(p, pivot, flipper.angle) for p in points]
         pygame.draw.polygon(self.screen, (255, 80, 80), rotated)
 
     def draw(self):
@@ -58,8 +64,8 @@ class Display:
         for bumper in self.bumpers:
             pygame.draw.circle(self.screen, (255, 0, 0), (int(bumper.x), int(bumper.y)), bumper.radius)
 
-        self.draw_flipper(pivot=(280, 540), length=100, width=20, angle=self.left_angle, flip=False)
-        self.draw_flipper(pivot=(520, 540), length=100, width=20, angle=self.right_angle, flip=True)
+        self.draw_flipper(self.left_flipper, pivot=(280, 540), length=100, width=20)
+        self.draw_flipper(self.right_flipper, pivot=(520, 540), length=100, width=20, flip=True)
 
         pygame.display.flip()
 
@@ -71,8 +77,18 @@ class Display:
                     running = False
 
             keys = pygame.key.get_pressed()
-            self.left_angle = 60 if keys[pygame.K_a] else 0
-            self.right_angle = -60 if keys[pygame.K_l] else 0
+
+            if self.left_flipper:
+                if keys[pygame.K_a]:
+                    self.left_flipper.activate()
+                else:
+                    self.left_flipper.deactivate()
+
+            if self.right_flipper:
+                if keys[pygame.K_l]:
+                    self.right_flipper.activate()
+                else:
+                    self.right_flipper.deactivate()
 
             self.ball.move()
             self.draw()
