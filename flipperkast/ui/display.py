@@ -2,8 +2,8 @@ import pygame
 import math
 from game.flipper import Flipper
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 800
 BALL_RADIUS = 10
 
 def rotate_point(point, pivot, angle):
@@ -53,19 +53,19 @@ class Display:
 
         wall_thickness = 10
         wall_color = (100, 100, 100)
-        pygame.draw.rect(self.screen, wall_color, (0, 0, wall_thickness, SCREEN_HEIGHT))
-        pygame.draw.rect(self.screen, wall_color, (SCREEN_WIDTH - wall_thickness, 0, wall_thickness, SCREEN_HEIGHT))
-        pygame.draw.rect(self.screen, wall_color, (0, 0, SCREEN_WIDTH, wall_thickness))
-        pygame.draw.rect(self.screen, wall_color, (0, SCREEN_HEIGHT - wall_thickness, 260, wall_thickness))
-        pygame.draw.rect(self.screen, wall_color, (SCREEN_WIDTH - 260, SCREEN_HEIGHT - wall_thickness, 260, wall_thickness))
+        pygame.draw.rect(self.screen, wall_color, (0, 0, wall_thickness, SCREEN_HEIGHT))  # links
+        pygame.draw.rect(self.screen, wall_color, (SCREEN_WIDTH - wall_thickness, 0, wall_thickness, SCREEN_HEIGHT))  # rechts
+        pygame.draw.rect(self.screen, wall_color, (0, 0, SCREEN_WIDTH, wall_thickness))  # boven
+        pygame.draw.rect(self.screen, wall_color, (0, SCREEN_HEIGHT - wall_thickness, 140, wall_thickness))  # onderlinks
+        pygame.draw.rect(self.screen, wall_color, (SCREEN_WIDTH - 140, SCREEN_HEIGHT - wall_thickness, 140, wall_thickness))  # onderrechts
 
         pygame.draw.circle(self.screen, (255, 255, 255), (int(self.ball.x), int(self.ball.y)), BALL_RADIUS)
 
         for bumper in self.bumpers:
             pygame.draw.circle(self.screen, (255, 0, 0), (int(bumper.x), int(bumper.y)), bumper.radius)
 
-        self.draw_flipper(self.left_flipper, pivot=(280, 540), length=100, width=20)
-        self.draw_flipper(self.right_flipper, pivot=(520, 540), length=100, width=20, flip=True)
+        self.draw_flipper(self.left_flipper, pivot=(180, 740), length=100, width=20)
+        self.draw_flipper(self.right_flipper, pivot=(420, 740), length=100, width=20, flip=True)
 
         pygame.display.flip()
 
