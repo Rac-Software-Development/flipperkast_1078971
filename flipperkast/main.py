@@ -6,5 +6,6 @@ if __name__ == "__main__":
     scorepanel = ScorePanel() 
     game = GameManager()
     display = Display(game.ball, game.bumpers)
+    display.set_flippers(game.left_flipper, game.right_flipper)
     display.run()
     scorepanel.mqtt.stop() 
