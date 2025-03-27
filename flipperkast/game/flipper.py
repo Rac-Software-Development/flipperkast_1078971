@@ -1,4 +1,5 @@
 import math
+import random
 class Flipper:
     def __init__(self, side: str):
         self.side = side
@@ -21,8 +22,9 @@ class Flipper:
         distance = math.hypot(dx, dy)
 
         if distance < 50 and self.active:
-            ball.velocity_y = -abs(ball.velocity_y)
-            if self.side == 'left':
-                ball.velocity_x -= 2
-            else:
-                ball.velocity_x += 2
+            direction_x = dx / distance
+            direction_y = dy / distance
+
+            speed = 7 + random.uniform(0.5, 1.5)
+            ball.velocity_x = direction_x * speed
+            ball.velocity_y = direction_y * speed * -1

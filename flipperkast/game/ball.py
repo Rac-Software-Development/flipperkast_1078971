@@ -6,6 +6,8 @@ class Ball:
         self.velocity_y = 3
 
     def move(self):
+        self.velocity_y += 0.1
+        
         self.x += self.velocity_x
         self.y += self.velocity_y
 
