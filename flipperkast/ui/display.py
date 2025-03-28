@@ -67,6 +67,13 @@ class Display:
         self.draw_flipper(self.left_flipper, pivot=(180, 740), length=100, width=20)
         self.draw_flipper(self.right_flipper, pivot=(420, 740), length=100, width=20, flip=True)
 
+#hitbox
+        for point in self.left_flipper.get_hitbox():
+            pygame.draw.circle(self.screen, (0, 255, 0), (int(point[0]), int(point[1])), 4)
+
+        for point in self.right_flipper.get_hitbox():
+            pygame.draw.circle(self.screen, (0, 255, 0), (int(point[0]), int(point[1])), 4)
+
         pygame.display.flip()
 
     def run(self):
