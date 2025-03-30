@@ -45,8 +45,8 @@ class GameManager:
         
         self.bumpers = self.create_bumpers()
         
-        self.left_flipper = Flipper(self.space, (self.left_flipper_x, self.flipper_y), is_left=True)
-        self.right_flipper = Flipper(self.space, (self.right_flipper_x, self.flipper_y), is_left=False)  
+        self.left_flipper = Flipper(self.space, (self.left_flipper_x, self.flipper_y + 90), is_left=True)
+        self.right_flipper = Flipper(self.space, (self.right_flipper_x, self.flipper_y + 90), is_left=False)  
         
         self.setup_collision_handlers()
         
@@ -116,25 +116,40 @@ class GameManager:
             wall_thickness
         )
         
-        bottom_wall = pymunk.Segment(
+        bottom_left_wall = pymunk.Segment(
             self.space.static_body,
             (self.left_x, self.bottom_y),
+            (self.left_flipper_x - 50, self.bottom_y),
+            wall_thickness
+        )
+        
+        bottom_right_wall = pymunk.Segment(
+            self.space.static_body,
+            (self.right_flipper_x + 50, self.bottom_y),
             (self.right_x - 40, self.bottom_y),
             wall_thickness
         )
-        bottom_wall.collision_type = 99
+        
+        drain_sensor = pymunk.Segment(
+            self.space.static_body,
+            (self.left_flipper_x - 50, self.bottom_y),
+            (self.right_flipper_x + 50, self.bottom_y),
+            wall_thickness
+        )
+        drain_sensor.sensor = True
+        drain_sensor.collision_type = 99
         
         bottom_left_diag = pymunk.Segment(
             self.space.static_body,
             (self.left_x, self.bottom_y),
-            (self.left_flipper_x, self.flipper_y),
+            (self.left_flipper_x - 30, self.bottom_y + 50),
             wall_thickness
         )
         
         bottom_right_diag = pymunk.Segment(
             self.space.static_body,
             (self.right_x - 40, self.bottom_y),
-            (self.right_flipper_x, self.flipper_y),
+            (self.right_flipper_x + 30, self.bottom_y + 50),
             wall_thickness
         )
         
@@ -160,7 +175,8 @@ class GameManager:
         )
         
         all_walls = [
-            left_wall, right_wall, bottom_wall, 
+            left_wall, right_wall,
+            bottom_left_wall, bottom_right_wall, drain_sensor,
             bottom_left_diag, bottom_right_diag,
             plunger_lane_right, plunger_lane_bottom, right_wall_extension
         ]
@@ -281,7 +297,7 @@ class GameManager:
             self.mqtt.publish_ball_position(position.x, position.y, velocity.x, velocity.y)
     
     def check_ball_bounds(self):
-        if self.ball_shape.body.position.y > self.bottom_y + 160 and not self.game_over:
+        if self.ball_shape.body.position.y > self.bottom_y + 800 and not self.game_over:
             self.game_over = True
             
             if self.score > self.highscore:
